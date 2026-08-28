@@ -1,6 +1,5 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify
 from flask_cors import CORS
-import os
 
 app = Flask(__name__)
 CORS(app)
@@ -26,11 +25,6 @@ def perform_calculation(number1, number2, operation):
     except ValueError:
         return {"error": "Invalid numbers"}
 
-@app.route('/', methods=['GET'])
-def home():
-    """Serve the main HTML file"""
-    return send_file('public/index.html')
-
 @app.route('/api/calculate', methods=['POST'])
 def calculate():
     """API endpoint for calculations"""
@@ -53,6 +47,17 @@ def calculate():
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route('/api/health', methods=['GET'])
+def health():
+    """Health check endpoint"""
+    return jsonify({"status": "ok"}), 200
+
+# Serverless function handler for Vercel
+def handler(request):
+    """Entry point for Vercel serverless functions"""
+    with app.test_request_context(request.url, method=request.method, data=request.get_data()):
+        return app.full_dispatch_request()
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
