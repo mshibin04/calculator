@@ -1,0 +1,2 @@
+this is my own Python programme This is the Python function for the calculator So I was learning Python And I want to learn it through stardance and so this programme is for the calculator and there is no UI for it this is just a programme for it only a python file only there is you guys can enjoy this in the terminal
+and I have to use AI to build the UI 'cause I don't know HTML or CSS or JavaScript to build that so I had to rely on AI to build the UI but the Python function that I build myself now AI included inside that
