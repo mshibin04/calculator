@@ -1,11 +1,10 @@
 <html>
   <head>
-    <title>Calculator App</title>
+    <title>My Calculator</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       body {
-        font-family: Arial, Verdana, sans-serif;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         margin: 0;
         padding: 20px;
@@ -13,245 +12,240 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        font-family: Arial, sans-serif;
       }
 
-      .main {
+      .container {
         background: white;
         padding: 30px;
         border-radius: 12px;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
         width: 100%;
-        max-width: 380px;
+        max-width: 400px;
       }
 
-      h2 {
+      h1 {
         text-align: center;
         color: #333;
-        margin-top: 0;
+        margin-top: 5px;
+        margin-bottom: 20px;
+        font-size: 24px;
       }
 
-      .input-area {
-        margin-bottom: 15px;
+      .input-field {
+        margin-bottom: 12px;
       }
 
-      .input-area label {
+      label {
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 4px;
         font-weight: bold;
-        color: #555;
+        color: #444;
         font-size: 13px;
       }
 
-      .input-area input {
+      input {
         width: 100%;
-        padding: 9px;
-        border: 2px solid #ddd;
-        border-radius: 5px;
+        padding: 8px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
         font-size: 14px;
         box-sizing: border-box;
       }
 
-      .input-area input:focus {
-        border-color: #667eea;
+      input:focus {
+        border: 2px solid #667eea;
         outline: none;
       }
 
-      .ops-section {
-        margin-top: 20px;
+      .buttons-section {
+        margin-top: 18px;
         margin-bottom: 15px;
       }
 
-      .ops-section label {
+      .buttons-section label {
         display: block;
-        font-weight: bold;
         margin-bottom: 8px;
-        color: #555;
         font-size: 13px;
+        color: #333;
       }
 
-      .btn-container {
+      .calc-buttons {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 8px;
       }
 
-      .btn {
+      button {
         padding: 10px;
         border: none;
-        border-radius: 5px;
-        font-size: 15px;
+        border-radius: 4px;
+        font-size: 14px;
         font-weight: bold;
         color: white;
         cursor: pointer;
-        transition: transform 0.1s;
       }
 
-      .btn:hover {
-        transform: translateY(-2px);
-      }
-
-      .btn-plus {
+      .btn-add {
         background: linear-gradient(135deg, #667eea, #764ba2);
       }
 
-      .btn-minus {
+      .btn-sub {
         background: linear-gradient(135deg, #f093fb, #f5576c);
       }
 
-      .btn-times {
+      .btn-mul {
         background: linear-gradient(135deg, #4facfe, #00f2fe);
       }
 
-      .btn-divide {
+      .btn-div {
         background: linear-gradient(135deg, #43e97b, #38f9d7);
       }
 
-      .result-area {
-        margin-top: 20px;
-        margin-bottom: 15px;
+      button:hover {
+        opacity: 0.9;
+      }
+
+      .result-section {
+        margin: 15px 0;
       }
 
       .result-label {
         font-size: 12px;
         color: #666;
-        margin-bottom: 5px;
+        margin-bottom: 4px;
         font-weight: bold;
       }
 
-      .result-box {
-        background: #f9f9f9;
+      .result-display {
+        background: #f5f5f5;
         border: 1px solid #ddd;
         padding: 12px;
-        border-radius: 5px;
+        border-radius: 4px;
         text-align: right;
-        font-size: 22px;
+        font-size: 20px;
         font-weight: bold;
         color: #333;
-        min-height: 40px;
+        min-height: 35px;
         display: flex;
         align-items: center;
         justify-content: flex-end;
       }
 
-      .result-box.empty {
-        color: #aaa;
-        font-size: 13px;
+      .result-display.waiting {
+        color: #999;
+        font-size: 12px;
         justify-content: center;
       }
 
-      .error-text {
+      .error-msg {
         color: #d32f2f;
-        font-size: 12px;
+        font-size: 11px;
         margin-top: 8px;
         text-align: center;
         display: none;
       }
 
-      .error-text.show {
+      .error-msg.active {
         display: block;
       }
 
-      .clear-btn {
+      .reset-button {
         width: 100%;
-        padding: 9px;
-        background: #e0e0e0;
+        padding: 8px;
+        background: #ddd;
         color: #333;
         border: none;
-        border-radius: 5px;
+        border-radius: 4px;
         font-weight: bold;
         cursor: pointer;
-        font-size: 14px;
+        font-size: 13px;
       }
 
-      .clear-btn:hover {
-        background: #d0d0d0;
+      .reset-button:hover {
+        background: #ccc;
       }
     </style>
   </head>
   <body>
-    <div class="main">
-      <h2>Calculator</h2>
+    <div class="container">
+      <h1>Calculator</h1>
 
-      <div class="input-area">
-        <label>First Number:</label>
-        <input type="number" id="num1" step="any" placeholder="Enter number" />
+      <div class="input-field">
+        <label>Number 1:</label>
+        <input type="number" id="input1" step="any" />
       </div>
 
-      <div class="input-area">
-        <label>Second Number:</label>
-        <input type="number" id="num2" step="any" placeholder="Enter number" />
+      <div class="input-field">
+        <label>Number 2:</label>
+        <input type="number" id="input2" step="any" />
       </div>
 
-      <div class="ops-section">
-        <label>Operation:</label>
-        <div class="btn-container">
-          <button class="btn btn-plus" onclick="doCalc('+')">+</button>
-          <button class="btn btn-minus" onclick="doCalc('-')">-</button>
-          <button class="btn btn-times" onclick="doCalc('*')">*</button>
-          <button class="btn btn-divide" onclick="doCalc('/')">÷</button>
+      <div class="buttons-section">
+        <label>Choose Operation:</label>
+        <div class="calc-buttons">
+          <button class="btn-add" onclick="calculate('+')">+</button>
+          <button class="btn-sub" onclick="calculate('-')">-</button>
+          <button class="btn-mul" onclick="calculate('*')">*</button>
+          <button class="btn-div" onclick="calculate('/')">÷</button>
         </div>
       </div>
 
-      <div class="result-area">
-        <div class="result-label">Result:</div>
-        <div class="result-box empty" id="resultBox">Ready</div>
+      <div class="result-section">
+        <div class="result-label">Answer:</div>
+        <div class="result-display waiting" id="answer">Ready</div>
       </div>
 
-      <div class="error-text" id="errorBox"></div>
+      <div class="error-msg" id="errormsg"></div>
 
-      <button class="clear-btn" onclick="resetForm()">Clear</button>
+      <button class="reset-button" onclick="clear_calc()">Clear</button>
     </div>
 
     <script>
-      function doCalc(op) {
-        const n1 = document.getElementById("num1").value;
-        const n2 = document.getElementById("num2").value;
-        const resultBox = document.getElementById("resultBox");
-        const errorBox = document.getElementById("errorBox");
+      function calculate(symbol) {
+        let val1 = document.getElementById("input1").value;
+        let val2 = document.getElementById("input2").value;
+        let answerbox = document.getElementById("answer");
+        let errorbox = document.getElementById("errormsg");
 
-        errorBox.classList.remove("show");
-        errorBox.textContent = "";
+        errorbox.classList.remove("active");
+        errorbox.textContent = "";
 
-        if (!n1 || !n2) {
-          errorBox.textContent = "Please enter both numbers";
-          errorBox.classList.add("show");
+        if (!val1 || !val2) {
+          errorbox.textContent = "Please enter both numbers";
+          errorbox.classList.add("active");
           return;
         }
 
-        try {
-          let result;
-          const num1 = parseFloat(n1);
-          const num2 = parseFloat(n2);
+        let num1 = parseFloat(val1);
+        let num2 = parseFloat(val2);
+        let res = 0;
 
-          if (op === "+") {
-            result = num1 + num2;
-          } else if (op === "-") {
-            result = num1 - num2;
-          } else if (op === "*") {
-            result = num1 * num2;
-          } else if (op === "/") {
-            if (num2 === 0) {
-              errorBox.textContent = "Cannot divide by zero";
-              errorBox.classList.add("show");
-              return;
-            }
-            result = num1 / num2;
+        if (symbol == "+") {
+          res = num1 + num2;
+        } else if (symbol == "-") {
+          res = num1 - num2;
+        } else if (symbol == "*") {
+          res = num1 * num2;
+        } else if (symbol == "/") {
+          if (num2 == 0) {
+            errorbox.textContent = "Can't divide by zero";
+            errorbox.classList.add("active");
+            return;
           }
-
-          resultBox.textContent = result;
-          resultBox.classList.remove("empty");
-        } catch (err) {
-          errorBox.textContent = "Error in calculation";
-          errorBox.classList.add("show");
+          res = num1 / num2;
         }
+
+        answerbox.textContent = res;
+        answerbox.classList.remove("waiting");
       }
 
-      function resetForm() {
-        document.getElementById("num1").value = "";
-        document.getElementById("num2").value = "";
-        document.getElementById("resultBox").textContent = "Ready";
-        document.getElementById("resultBox").classList.add("empty");
-        document.getElementById("errorBox").classList.remove("show");
+      function clear_calc() {
+        document.getElementById("input1").value = "";
+        document.getElementById("input2").value = "";
+        document.getElementById("answer").textContent = "Ready";
+        document.getElementById("answer").classList.add("waiting");
+        document.getElementById("errormsg").classList.remove("active");
       }
     </script>
   </body>
