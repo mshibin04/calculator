@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .calculator-container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        padding: 40px;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+        font-size: 28px;
+        font-weight: 600;
+      }
+
+      .input-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        color: #555;
+        font-weight: 500;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+      }
+
+      input[type="number"]:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .operation-group {
+        margin-bottom: 30px;
+      }
+
+      .operation-group label {
+        margin-bottom: 12px;
+      }
+
+      .button-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .operation-btn {
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        color: white;
+      }
+
+      .operation-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .operation-btn:active {
+        transform: translateY(0);
+      }
+
+      .operation-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .btn-add {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+
+      .btn-subtract {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      }
+
+      .btn-multiply {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      }
+
+      .btn-divide {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+      }
+
+      .result-section {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 2px solid #e0e0e0;
+      }
+
+      .result-label {
+        color: #666;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .result-display {
+        background: #f5f5f5;
+        padding: 16px;
+        border-radius: 8px;
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+        text-align: right;
+        word-wrap: break-word;
+        word-break: break-all;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+
+      .result-display.empty {
+        color: #999;
+        font-size: 16px;
+        justify-content: center;
+      }
+
+      .result-display.loading {
+        color: #667eea;
+        font-size: 14px;
+      }
+
+      .reset-btn {
+        width: 100%;
+        margin-top: 20px;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background: #e0e0e0;
+        color: #333;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .reset-btn:hover {
+        background: #d0d0d0;
+      }
+
+      .error-message {
+        color: #f5576c;
+        font-size: 14px;
+        margin-top: 10px;
+        text-align: center;
+        display: none;
+      }
+
+      .error-message.show {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calculator-container">
+      <h1>🧮 Calculator</h1>
+
+      <div class="input-group">
+        <label for="number1">First Number:</label>
+        <input
+          type="number"
+          id="number1"
+          placeholder="Enter a number"
+          step="any"
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="number2">Second Number:</label>
+        <input
+          type="number"
+          id="number2"
+          placeholder="Enter a number"
+          step="any"
+        />
+      </div>
+
+      <div class="operation-group">
+        <label>Select Operation:</label>
+        <div class="button-grid">
+          <button class="operation-btn btn-add" onclick="calculate('+')">
+            +
+          </button>
+          <button class="operation-btn btn-subtract" onclick="calculate('-')">
+            −
+          </button>
+          <button class="operation-btn btn-multiply" onclick="calculate('*')">
+            ×
+          </button>
+          <button class="operation-btn btn-divide" onclick="calculate('/')">
+            ÷
+          </button>
+        </div>
+      </div>
+
+      <div class="error-message" id="errorMessage"></div>
+
+      <div class="result-section">
+        <div class="result-label">Result:</div>
+        <div class="result-display empty" id="result">Ready</div>
+      </div>
+
+      <button class="reset-btn" onclick="resetCalculator()">Clear</button>
+    </div>
+
+    <script>
+      // API Base URL - works on localhost and Vercel
+      const API_URL = window.location.origin;
+
+      async function calculate(operation) {
+        const number1 = document.getElementById("number1").value;
+        const number2 = document.getElementById("number2").value;
+        const resultDisplay = document.getElementById("result");
+        const errorMessage = document.getElementById("errorMessage");
+
+        // Clear error message
+        errorMessage.classList.remove("show");
+
+        // Validate inputs
+        if (!number1 || !number2) {
+          errorMessage.textContent = "Please enter valid numbers";
+          errorMessage.classList.add("show");
+          resultDisplay.textContent = "Error";
+          resultDisplay.classList.add("empty");
+          return;
+        }
+
+        // Show loading state
+        resultDisplay.textContent = "Calculating...";
+        resultDisplay.classList.add("loading");
+        resultDisplay.classList.remove("empty");
+
+        try {
+          // Call backend API
+          const response = await fetch(`${API_URL}/api/calculate`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              number1: parseFloat(number1),
+              number2: parseFloat(number2),
+              operation: operation,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            // Display result from backend
+            resultDisplay.textContent = data.result;
+            resultDisplay.classList.remove("loading", "empty");
+          } else {
+            // Show error from backend
+            errorMessage.textContent = data.error || "An error occurred";
+            errorMessage.classList.add("show");
+            resultDisplay.textContent = "Error";
+            resultDisplay.classList.add("empty");
+            resultDisplay.classList.remove("loading");
+          }
+        } catch (error) {
+          // Network or other errors
+          errorMessage.textContent = "Connection error: " + error.message;
+          errorMessage.classList.add("show");
+          resultDisplay.textContent = "Error";
+          resultDisplay.classList.add("empty");
+          resultDisplay.classList.remove("loading");
+        }
+      }
+
+      function resetCalculator() {
+        document.getElementById("number1").value = "";
+        document.getElementById("number2").value = "";
+        document.getElementById("result").textContent = "Ready";
+        document.getElementById("result").classList.add("empty");
+        document.getElementById("result").classList.remove("loading");
+        document.getElementById("errorMessage").classList.remove("show");
+      }
+
+      // Allow Enter key to calculate
+      document
+        .getElementById("number1")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") document.getElementById("number2").focus();
+        });
+
+      document
+        .getElementById("number2")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") calculate("+");
+        });
+    </script>
+  </body>
+</html>
