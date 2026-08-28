@@ -1,332 +1,263 @@
-<!doctype html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculator</title>
+    <title>Calculator App</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
       body {
+        font-family: Arial, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 100vh;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       }
 
-      .calculator-container {
+      .main {
         background: white;
-        border-radius: 20px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        padding: 40px;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
         width: 100%;
-        max-width: 400px;
+        max-width: 380px;
       }
 
-      h1 {
+      h2 {
         text-align: center;
         color: #333;
-        margin-bottom: 30px;
-        font-size: 28px;
-        font-weight: 600;
+        margin-top: 0;
       }
 
-      .input-group {
-        margin-bottom: 20px;
+      .input-area {
+        margin-bottom: 15px;
       }
 
-      label {
+      .input-area label {
         display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
         color: #555;
-        font-weight: 500;
-        margin-bottom: 8px;
-        font-size: 14px;
+        font-size: 13px;
       }
 
-      input[type="number"] {
+      .input-area input {
         width: 100%;
-        padding: 12px;
-        border: 2px solid #e0e0e0;
-        border-radius: 8px;
-        font-size: 16px;
-        transition: border-color 0.3s;
+        padding: 9px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+        box-sizing: border-box;
       }
 
-      input[type="number"]:focus {
-        outline: none;
+      .input-area input:focus {
         border-color: #667eea;
+        outline: none;
       }
 
-      .operation-group {
-        margin-bottom: 30px;
+      .ops-section {
+        margin-top: 20px;
+        margin-bottom: 15px;
       }
 
-      .operation-group label {
-        margin-bottom: 12px;
+      .ops-section label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #555;
+        font-size: 13px;
       }
 
-      .button-grid {
+      .btn-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
+        gap: 8px;
       }
 
-      .operation-btn {
-        padding: 12px;
+      .btn {
+        padding: 10px;
         border: none;
-        border-radius: 8px;
-        font-size: 18px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
+        border-radius: 5px;
+        font-size: 15px;
+        font-weight: bold;
         color: white;
+        cursor: pointer;
+        transition: transform 0.1s;
       }
 
-      .operation-btn:hover {
+      .btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       }
 
-      .operation-btn:active {
-        transform: translateY(0);
+      .btn-plus {
+        background: linear-gradient(135deg, #667eea, #764ba2);
       }
 
-      .operation-btn:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
+      .btn-minus {
+        background: linear-gradient(135deg, #f093fb, #f5576c);
       }
 
-      .btn-add {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      }
-
-      .btn-subtract {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      }
-
-      .btn-multiply {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      .btn-times {
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
       }
 
       .btn-divide {
-        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        background: linear-gradient(135deg, #43e97b, #38f9d7);
       }
 
-      .result-section {
-        margin-top: 30px;
-        padding-top: 20px;
-        border-top: 2px solid #e0e0e0;
+      .result-area {
+        margin-top: 20px;
+        margin-bottom: 15px;
       }
 
       .result-label {
+        font-size: 12px;
         color: #666;
-        font-size: 14px;
-        font-weight: 500;
-        margin-bottom: 8px;
+        margin-bottom: 5px;
+        font-weight: bold;
       }
 
-      .result-display {
-        background: #f5f5f5;
-        padding: 16px;
-        border-radius: 8px;
-        font-size: 28px;
+      .result-box {
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 12px;
+        border-radius: 5px;
+        text-align: right;
+        font-size: 22px;
         font-weight: bold;
         color: #333;
-        text-align: right;
-        word-wrap: break-word;
-        word-break: break-all;
-        min-height: 50px;
+        min-height: 40px;
         display: flex;
         align-items: center;
         justify-content: flex-end;
       }
 
-      .result-display.empty {
-        color: #999;
-        font-size: 16px;
+      .result-box.empty {
+        color: #aaa;
+        font-size: 13px;
         justify-content: center;
       }
 
-      .result-display.loading {
-        color: #667eea;
-        font-size: 14px;
-      }
-
-      .reset-btn {
-        width: 100%;
-        margin-top: 20px;
-        padding: 12px;
-        border: none;
-        border-radius: 8px;
-        background: #e0e0e0;
-        color: #333;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-      }
-
-      .reset-btn:hover {
-        background: #d0d0d0;
-      }
-
-      .error-message {
-        color: #f5576c;
-        font-size: 14px;
-        margin-top: 10px;
+      .error-text {
+        color: #d32f2f;
+        font-size: 12px;
+        margin-top: 8px;
         text-align: center;
         display: none;
       }
 
-      .error-message.show {
+      .error-text.show {
         display: block;
+      }
+
+      .clear-btn {
+        width: 100%;
+        padding: 9px;
+        background: #e0e0e0;
+        color: #333;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .clear-btn:hover {
+        background: #d0d0d0;
       }
     </style>
   </head>
   <body>
-    <div class="calculator-container">
-      <h1>🧮 Calculator</h1>
+    <div class="main">
+      <h2>Calculator</h2>
 
-      <div class="input-group">
-        <label for="number1">First Number:</label>
-        <input
-          type="number"
-          id="number1"
-          placeholder="Enter a number"
-          step="any"
-        />
+      <div class="input-area">
+        <label>First Number:</label>
+        <input type="number" id="num1" step="any" placeholder="Enter number" />
       </div>
 
-      <div class="input-group">
-        <label for="number2">Second Number:</label>
-        <input
-          type="number"
-          id="number2"
-          placeholder="Enter a number"
-          step="any"
-        />
+      <div class="input-area">
+        <label>Second Number:</label>
+        <input type="number" id="num2" step="any" placeholder="Enter number" />
       </div>
 
-      <div class="operation-group">
-        <label>Select Operation:</label>
-        <div class="button-grid">
-          <button class="operation-btn btn-add" onclick="calculate('+')">
-            +
-          </button>
-          <button class="operation-btn btn-subtract" onclick="calculate('-')">
-            −
-          </button>
-          <button class="operation-btn btn-multiply" onclick="calculate('*')">
-            ×
-          </button>
-          <button class="operation-btn btn-divide" onclick="calculate('/')">
-            ÷
-          </button>
+      <div class="ops-section">
+        <label>Operation:</label>
+        <div class="btn-container">
+          <button class="btn btn-plus" onclick="doCalc('+')">+</button>
+          <button class="btn btn-minus" onclick="doCalc('-')">-</button>
+          <button class="btn btn-times" onclick="doCalc('*')">*</button>
+          <button class="btn btn-divide" onclick="doCalc('/')">÷</button>
         </div>
       </div>
 
-      <div class="error-message" id="errorMessage"></div>
-
-      <div class="result-section">
+      <div class="result-area">
         <div class="result-label">Result:</div>
-        <div class="result-display empty" id="result">Ready</div>
+        <div class="result-box empty" id="resultBox">Ready</div>
       </div>
 
-      <button class="reset-btn" onclick="resetCalculator()">Clear</button>
+      <div class="error-text" id="errorBox"></div>
+
+      <button class="clear-btn" onclick="resetForm()">Clear</button>
     </div>
 
     <script>
-      // API Base URL - works on localhost and Vercel
-      const API_URL = window.location.origin;
+      async function doCalc(op) {
+        const n1 = document.getElementById("num1").value;
+        const n2 = document.getElementById("num2").value;
+        const resultBox = document.getElementById("resultBox");
+        const errorBox = document.getElementById("errorBox");
 
-      async function calculate(operation) {
-        const number1 = document.getElementById("number1").value;
-        const number2 = document.getElementById("number2").value;
-        const resultDisplay = document.getElementById("result");
-        const errorMessage = document.getElementById("errorMessage");
+        errorBox.classList.remove("show");
+        errorBox.textContent = "";
 
-        // Clear error message
-        errorMessage.classList.remove("show");
-
-        // Validate inputs
-        if (!number1 || !number2) {
-          errorMessage.textContent = "Please enter valid numbers";
-          errorMessage.classList.add("show");
-          resultDisplay.textContent = "Error";
-          resultDisplay.classList.add("empty");
+        if (!n1 || !n2) {
+          errorBox.textContent = "Please enter both numbers";
+          errorBox.classList.add("show");
           return;
         }
 
-        // Show loading state
-        resultDisplay.textContent = "Calculating...";
-        resultDisplay.classList.add("loading");
-        resultDisplay.classList.remove("empty");
-
         try {
-          // Call backend API
-          const response = await fetch(`${API_URL}/api/calculate`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
+          const response = await fetch(
+            window.location.origin + "/api/calculate",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                number1: parseFloat(n1),
+                number2: parseFloat(n2),
+                operation: op,
+              }),
             },
-            body: JSON.stringify({
-              number1: parseFloat(number1),
-              number2: parseFloat(number2),
-              operation: operation,
-            }),
-          });
+          );
 
           const data = await response.json();
 
           if (response.ok) {
-            // Display result from backend
-            resultDisplay.textContent = data.result;
-            resultDisplay.classList.remove("loading", "empty");
+            resultBox.textContent = data.result;
+            resultBox.classList.remove("empty");
           } else {
-            // Show error from backend
-            errorMessage.textContent = data.error || "An error occurred";
-            errorMessage.classList.add("show");
-            resultDisplay.textContent = "Error";
-            resultDisplay.classList.add("empty");
-            resultDisplay.classList.remove("loading");
+            errorBox.textContent = data.error || "Error";
+            errorBox.classList.add("show");
+            resultBox.textContent = "Error";
+            resultBox.classList.add("empty");
           }
-        } catch (error) {
-          // Network or other errors
-          errorMessage.textContent = "Connection error: " + error.message;
-          errorMessage.classList.add("show");
-          resultDisplay.textContent = "Error";
-          resultDisplay.classList.add("empty");
-          resultDisplay.classList.remove("loading");
+        } catch (err) {
+          errorBox.textContent = "Connection error";
+          errorBox.classList.add("show");
         }
       }
 
-      function resetCalculator() {
-        document.getElementById("number1").value = "";
-        document.getElementById("number2").value = "";
-        document.getElementById("result").textContent = "Ready";
-        document.getElementById("result").classList.add("empty");
-        document.getElementById("result").classList.remove("loading");
-        document.getElementById("errorMessage").classList.remove("show");
+      function resetForm() {
+        document.getElementById("num1").value = "";
+        document.getElementById("num2").value = "";
+        document.getElementById("resultBox").textContent = "Ready";
+        document.getElementById("resultBox").classList.add("empty");
+        document.getElementById("errorBox").classList.remove("show");
       }
-
-      // Allow Enter key to calculate
-      document
-        .getElementById("number1")
-        .addEventListener("keypress", function (e) {
-          if (e.key === "Enter") document.getElementById("number2").focus();
-        });
-
-      document
-        .getElementById("number2")
-        .addEventListener("keypress", function (e) {
-          if (e.key === "Enter") calculate("+");
-        });
     </script>
   </body>
 </html>
