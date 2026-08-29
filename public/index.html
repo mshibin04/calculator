@@ -1,252 +1,303 @@
-<html>
-  <head>
-    <title>My Calculator</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      body {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        margin: 0;
-        padding: 20px;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-family: Arial, sans-serif;
-      }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --ink: #f2ead9;
+      --amber: #f0a83c;
+      --amber-dim: #c98a34;
+      --shell: #1b1815;
+      --titlebar: #14120f;
+      --panel: #2c2822;
+      --clear: #b1543f;
+    }
 
-      .container {
-        background: white;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-        width: 100%;
-        max-width: 400px;
-      }
+    * { box-sizing: border-box; }
 
-      h1 {
-        text-align: center;
-        color: #333;
-        margin-top: 5px;
-        margin-bottom: 20px;
-        font-size: 24px;
-      }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+      background: radial-gradient(circle at 20% 15%, #f2ead8, #e2d5bb 75%);
+      font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+    }
 
-      .input-field {
-        margin-bottom: 12px;
-      }
+    .desk {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
 
-      label {
-        display: block;
-        margin-bottom: 4px;
-        font-weight: bold;
-        color: #444;
-        font-size: 13px;
-      }
+    .terminal {
+      width: 100%;
+      background: var(--shell);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow:
+        0 24px 50px -20px rgba(0, 0, 0, 0.55),
+        0 1px 0 rgba(255, 255, 255, 0.04) inset;
+    }
 
-      input {
-        width: 100%;
-        padding: 8px;
-        border: 2px solid #ccc;
-        border-radius: 4px;
-        font-size: 14px;
-        box-sizing: border-box;
-      }
+    .titlebar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--titlebar);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
 
-      input:focus {
-        border: 2px solid #667eea;
-        outline: none;
-      }
+    .dots { display: flex; gap: 6px; }
+    .dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .dots span:nth-child(1) { background: #c9564a; }
+    .dots span:nth-child(2) { background: #d9a441; }
+    .dots span:nth-child(3) { background: #5f9065; }
 
-      .buttons-section {
-        margin-top: 18px;
-        margin-bottom: 15px;
-      }
+    .tab {
+      color: #a89c86;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+    }
 
-      .buttons-section label {
-        display: block;
-        margin-bottom: 8px;
-        font-size: 13px;
-        color: #333;
-      }
+    .screen { padding: 20px 18px 22px; }
 
-      .calc-buttons {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-      }
+    .banner {
+      color: var(--amber-dim);
+      font-size: 11px;
+      line-height: 1.5;
+      margin: 0 0 16px;
+      white-space: pre;
+      overflow-x: auto;
+    }
 
-      button {
-        padding: 10px;
-        border: none;
-        border-radius: 4px;
-        font-size: 14px;
-        font-weight: bold;
-        color: white;
-        cursor: pointer;
-      }
+    .line {
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
 
-      .btn-add {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-      }
+    .line label,
+    .line .label {
+      color: #cfc4ac;
+      font-size: 12.5px;
+    }
 
-      .btn-sub {
-        background: linear-gradient(135deg, #f093fb, #f5576c);
-      }
+    input[type="number"] {
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 14px;
+      padding: 9px 10px;
+      border-radius: 6px;
+      width: 100%;
+    }
+    input[type="number"]:focus {
+      outline: none;
+      border-color: var(--amber);
+    }
 
-      .btn-mul {
-        background: linear-gradient(135deg, #4facfe, #00f2fe);
-      }
+    .keys {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .keys button {
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 10px 0;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: var(--amber);
+      color: #241a08;
+      transition: filter 0.15s ease, transform 0.08s ease;
+    }
+    .keys button:hover { filter: brightness(1.08); }
+    .keys button:active { transform: translateY(1px); }
 
-      .btn-div {
-        background: linear-gradient(135deg, #43e97b, #38f9d7);
-      }
+    .out {
+      margin-top: 4px;
+      color: var(--amber);
+      font-size: 17px;
+      min-height: 24px;
+      text-shadow: 0 0 10px rgba(240, 168, 60, 0.35);
+    }
 
-      button:hover {
-        opacity: 0.9;
-      }
+    .cursor {
+      display: inline-block;
+      margin-left: 2px;
+      animation: blink 1s steps(1) infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
 
-      .result-section {
-        margin: 15px 0;
-      }
+    .err {
+      color: var(--clear);
+      font-size: 12px;
+      min-height: 16px;
+    }
 
-      .result-label {
-        font-size: 12px;
-        color: #666;
-        margin-bottom: 4px;
-        font-weight: bold;
-      }
+    .restart {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 0;
+    }
+    .restart .label { flex: 1; }
 
-      .result-display {
-        background: #f5f5f5;
-        border: 1px solid #ddd;
-        padding: 12px;
-        border-radius: 4px;
-        text-align: right;
-        font-size: 20px;
-        font-weight: bold;
-        color: #333;
-        min-height: 35px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-      }
+    #reset {
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--ink);
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #reset:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
 
-      .result-display.waiting {
-        color: #999;
-        font-size: 12px;
-        justify-content: center;
-      }
+    .caption {
+      color: #8b7f68;
+      font-size: 12px;
+      text-align: center;
+      max-width: 380px;
+      line-height: 1.5;
+      margin: 0;
+    }
 
-      .error-msg {
-        color: #d32f2f;
-        font-size: 11px;
-        margin-top: 8px;
-        text-align: center;
-        display: none;
-      }
-
-      .error-msg.active {
-        display: block;
-      }
-
-      .reset-button {
-        width: 100%;
-        padding: 8px;
-        background: #ddd;
-        color: #333;
-        border: none;
-        border-radius: 4px;
-        font-weight: bold;
-        cursor: pointer;
-        font-size: 13px;
-      }
-
-      .reset-button:hover {
-        background: #ccc;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>Calculator</h1>
-
-      <div class="input-field">
-        <label>Number 1:</label>
-        <input type="number" id="input1" step="any" />
+    @media (max-width: 380px) {
+      .keys { grid-template-columns: repeat(2, 1fr); }
+      .restart { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="desk">
+    <div class="terminal">
+      <div class="titlebar">
+        <span class="dots"><span></span><span></span><span></span></span>
+        <span class="tab">calculator.py — running</span>
       </div>
 
-      <div class="input-field">
-        <label>Number 2:</label>
-        <input type="number" id="input2" step="any" />
-      </div>
+      <div class="screen">
+        <pre class="banner">========================================
+-------Welcome to the Calculator!-------
+========================================</pre>
 
-      <div class="buttons-section">
-        <label>Choose Operation:</label>
-        <div class="calc-buttons">
-          <button class="btn-add" onclick="calculate('+')">+</button>
-          <button class="btn-sub" onclick="calculate('-')">-</button>
-          <button class="btn-mul" onclick="calculate('*')">*</button>
-          <button class="btn-div" onclick="calculate('/')">÷</button>
+        <div class="line">
+          <label for="input1">Enter the first number:</label>
+          <input type="number" id="input1" step="any" inputmode="decimal" />
+        </div>
+
+        <div class="line">
+          <label for="input2">Enter the second number:</label>
+          <input type="number" id="input2" step="any" inputmode="decimal" />
+        </div>
+
+        <div class="line">
+          <span class="label">Enter the symbol (+, -, *, /):</span>
+          <div class="keys">
+            <button type="button" data-op="+">+</button>
+            <button type="button" data-op="-">-</button>
+            <button type="button" data-op="*">*</button>
+            <button type="button" data-op="/">÷</button>
+          </div>
+        </div>
+
+        <div class="out" id="out">&gt; waiting for input<span class="cursor">_</span></div>
+        <div class="err" id="err"></div>
+
+        <div class="line restart">
+          <span class="label">Type 'stop' to exit, or press Enter to continue:</span>
+          <button type="button" id="reset">clear</button>
         </div>
       </div>
-
-      <div class="result-section">
-        <div class="result-label">Answer:</div>
-        <div class="result-display waiting" id="answer">Ready</div>
-      </div>
-
-      <div class="error-msg" id="errormsg"></div>
-
-      <button class="reset-button" onclick="clear_calc()">Clear</button>
     </div>
 
-    <script>
-      function calculate(symbol) {
-        let val1 = document.getElementById("input1").value;
-        let val2 = document.getElementById("input2").value;
-        let answerbox = document.getElementById("answer");
-        let errorbox = document.getElementById("errormsg");
+    <p class="caption">
+      A calculator I put together while learning Python — the math logic is
+      mine, and I leaned on AI to help turn it into something you can use in
+      a browser.
+    </p>
+  </div>
 
-        errorbox.classList.remove("active");
-        errorbox.textContent = "";
+  <script>
+    var input1 = document.getElementById("input1");
+    var input2 = document.getElementById("input2");
+    var out = document.getElementById("out");
+    var err = document.getElementById("err");
+    var resetBtn = document.getElementById("reset");
 
-        if (!val1 || !val2) {
-          errorbox.textContent = "Please enter both numbers";
-          errorbox.classList.add("active");
+    var opButtons = document.querySelectorAll(".keys button");
+    for (var i = 0; i < opButtons.length; i++) {
+      opButtons[i].addEventListener("click", function (event) {
+        calculate(event.target.getAttribute("data-op"));
+      });
+    }
+
+    resetBtn.addEventListener("click", function () {
+      input1.value = "";
+      input2.value = "";
+      out.innerHTML = "&gt; waiting for input<span class=\"cursor\">_</span>";
+      err.textContent = "";
+    });
+
+    function calculate(symbol) {
+      err.textContent = "";
+
+      if (input1.value === "" || input2.value === "") {
+        err.textContent = "Enter both numbers first.";
+        return;
+      }
+
+      var number1 = parseFloat(input1.value);
+      var number2 = parseFloat(input2.value);
+      var result;
+
+      if (symbol === "+") {
+        result = number1 + number2;
+      } else if (symbol === "-") {
+        result = number1 - number2;
+      } else if (symbol === "*") {
+        result = number1 * number2;
+      } else if (symbol === "/") {
+        if (number2 === 0) {
+          err.textContent = "Can't divide by zero.";
           return;
         }
-
-        let num1 = parseFloat(val1);
-        let num2 = parseFloat(val2);
-        let res = 0;
-
-        if (symbol == "+") {
-          res = num1 + num2;
-        } else if (symbol == "-") {
-          res = num1 - num2;
-        } else if (symbol == "*") {
-          res = num1 * num2;
-        } else if (symbol == "/") {
-          if (num2 == 0) {
-            errorbox.textContent = "Can't divide by zero";
-            errorbox.classList.add("active");
-            return;
-          }
-          res = num1 / num2;
-        }
-
-        answerbox.textContent = res;
-        answerbox.classList.remove("waiting");
+        result = number1 / number2;
       }
 
-      function clear_calc() {
-        document.getElementById("input1").value = "";
-        document.getElementById("input2").value = "";
-        document.getElementById("answer").textContent = "Ready";
-        document.getElementById("answer").classList.add("waiting");
-        document.getElementById("errormsg").classList.remove("active");
-      }
-    </script>
-  </body>
+      out.innerHTML = "&gt; ANSWER IS: " + result + "<span class=\"cursor\">_</span>";
+    }
+  </script>
+</body>
 </html>
