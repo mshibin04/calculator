@@ -1,41 +1,49 @@
 # Python Calculator
 
-A simple calculator I built while learning Python, with a small web version on top so it's easier for people to try out in a browser.
+A simple calculator I created while learning Python, and also made a web version so that people can try the calculator in a browser without having to type in commands.
 
-## What it does
+## Features
 
-- Basic operations: addition, subtraction, multiplication, division
-- Keeps asking for another calculation until you choose to stop
-- Catches division by zero instead of crashing
-- Runs two ways: in the terminal (`calculator.py`) or in a browser (`index.html`)
+- +, -, , / operations
 
-## How it's put together
+- Asks for more calculations until told otherwise
 
-**`calculator.py`** is the actual calculator — a loop that asks for two numbers and an operator, then prints the result. This is the part I wrote and tested myself while working through Python basics: input handling, conditionals, and loops.
+- No crashes due to dividing by zero
 
-**`index.html`** is a browser version of the same logic. I don't know HTML, CSS, or JavaScript yet, so I used AI to help turn the Python version into something people can click through in a browser instead of typing into a terminal. The math it does is exactly what `calculator.py` does — same operations, same messages — it's just wearing a different interface.
+- Can be run as a script in your terminal by typing 'calculator.py', or can be seen in a browser by typing 'index.html'
 
-**`vercel.json`** and **`requirements.txt`** were added while I was figuring out how to deploy this. I'm still learning how Vercel handles a Python script versus a static site, so those two files may need some cleanup as I get further along (see the note at the bottom).
+## Assembly
 
-## Running it
+The 'calculator.py' file itself is the calculator, which asks for two numbers and an operation until the user decides to stop. I made this myself by applying the concepts that I was learning with Python, such as getting input from the user with conditionals, and loops.
 
-**Terminal version:**
+The 'index.html' file is the web version of the calculator, which uses much of the same logic as 'calculator.py', but I had to get help from an AI since I have no experience in HTML, CSS, or JavaScript yet. I'm very proud of how well it turned out, especially considering that I had to learn much of it by trial-and-error.
+
+The files 'vercel.json' and 'requirements.txt' were added later on when I was trying to deploy the project, and will likely be deleted in the future. I don't completely understand how Vercel works with Python scripts and websites, which is why I'm sure that these files don't serve much of a purpose, besides testing.
+
+## Operation
+
+To run the terminal version of this calculator, type the following command into your terminal:
+
 ```bash
+
 python calculator.py
+
 ```
-Follow the prompts, and type `stop` when you're done.
 
-**Browser version:**
-Open `index.html` directly in a browser, or visit the deployed link if it's live.
+Then follow the prompts until you are asked to stop.
 
-## Why I made this
+To view the web version, open 'index.html' in your browser, or view the page in a browser if the site is deployed.
 
-This was my first real project after learning Python loops, conditionals, and user input. The browser version came afterward, mostly to see how far I could push something I'd already built by hand — even into territory (HTML/CSS/JS) I haven't learned yet.
+## Purpose
 
-## Known rough edge
+I created this script as my very first project after learning about loops, conditionals, and user input in Python. The web version was created afterwards mainly for fun, and to see how far I could go in a project that I had to manually type in, compared to a language I have no experience in.
 
-`requirements.txt` lists Flask, but `calculator.py` is a plain terminal script with no Flask app in it, and `index.html` does all its math in the browser rather than calling a backend. So right now the Flask dependency and the `api/*.py` route in `vercel.json` aren't actually used by anything. It's on my list to either build out a real API version or simplify the config to match what's actually deployed.
+## Compatibility
+
+It is unclear how compatible this project is, since the only reason that 'calculator.py' works is because it is not connected to any database or other Python script, besides the 'api/.py' route, which is not used by 'index.html'.
+
+The 'requirements.txt' file has 'Flask' listed, but 'calculator.py' is simply run as a script in the terminal. 'Index.html' has no connection to an API or database either, which means that the Flask dependency, and 'api/.py' route in 'vercel.json' are not being used. This means that I will likely have to create an API version, or remove some unecessary dependencies in the future.
 
 ---
 
-Feedback is welcome — I'm still learning.
+Please let me know if you have any suggestions or concerns! I am always looking to improve, and any feedback is appreciated!
