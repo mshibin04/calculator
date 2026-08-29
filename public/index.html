@@ -1,303 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Calculator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
-    rel="stylesheet"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    :root {
-      --ink: #f2ead9;
-      --amber: #f0a83c;
-      --amber-dim: #c98a34;
-      --shell: #1b1815;
-      --titlebar: #14120f;
-      --panel: #2c2822;
-      --clear: #b1543f;
-    }
-
-    * { box-sizing: border-box; }
-
     body {
-      margin: 0;
-      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
       display: flex;
-      align-items: center;
       justify-content: center;
-      padding: 32px 16px;
-      background: radial-gradient(circle at 20% 15%, #f2ead8, #e2d5bb 75%);
-      font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
-    }
-
-    .desk {
-      width: 100%;
-      max-width: 440px;
-      display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 16px;
+      height: 100vh;
+      margin: 0;
     }
-
-    .terminal {
+    .calculator {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      width: 280px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 20px;
+    }
+    input {
       width: 100%;
-      background: var(--shell);
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow:
-        0 24px 50px -20px rgba(0, 0, 0, 0.55),
-        0 1px 0 rgba(255, 255, 255, 0.04) inset;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
     }
-
-    .titlebar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      background: var(--titlebar);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .dots { display: flex; gap: 6px; }
-    .dots span {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-    .dots span:nth-child(1) { background: #c9564a; }
-    .dots span:nth-child(2) { background: #d9a441; }
-    .dots span:nth-child(3) { background: #5f9065; }
-
-    .tab {
-      color: #a89c86;
-      font-size: 12px;
-      letter-spacing: 0.02em;
-    }
-
-    .screen { padding: 20px 18px 22px; }
-
-    .banner {
-      color: var(--amber-dim);
-      font-size: 11px;
-      line-height: 1.5;
-      margin: 0 0 16px;
-      white-space: pre;
-      overflow-x: auto;
-    }
-
-    .line {
-      margin-bottom: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .line label,
-    .line .label {
-      color: #cfc4ac;
-      font-size: 12.5px;
-    }
-
-    input[type="number"] {
-      background: var(--panel);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: var(--ink);
-      font-family: inherit;
-      font-size: 14px;
-      padding: 9px 10px;
-      border-radius: 6px;
-      width: 100%;
-    }
-    input[type="number"]:focus {
-      outline: none;
-      border-color: var(--amber);
-    }
-
-    .keys {
+    .buttons {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+      gap: 6px;
+      margin-bottom: 10px;
     }
-    .keys button {
-      font-family: inherit;
-      font-size: 15px;
-      font-weight: 700;
-      padding: 10px 0;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      background: var(--amber);
-      color: #241a08;
-      transition: filter 0.15s ease, transform 0.08s ease;
-    }
-    .keys button:hover { filter: brightness(1.08); }
-    .keys button:active { transform: translateY(1px); }
-
-    .out {
-      margin-top: 4px;
-      color: var(--amber);
-      font-size: 17px;
-      min-height: 24px;
-      text-shadow: 0 0 10px rgba(240, 168, 60, 0.35);
-    }
-
-    .cursor {
-      display: inline-block;
-      margin-left: 2px;
-      animation: blink 1s steps(1) infinite;
-    }
-    @keyframes blink { 50% { opacity: 0; } }
-
-    .err {
-      color: var(--clear);
-      font-size: 12px;
-      min-height: 16px;
-    }
-
-    .restart {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 0;
-    }
-    .restart .label { flex: 1; }
-
-    #reset {
-      font-family: inherit;
-      font-size: 12.5px;
-      font-weight: 700;
-      color: var(--ink);
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      padding: 8px 14px;
-      border-radius: 6px;
+    button {
+      padding: 8px;
       cursor: pointer;
     }
-    #reset:hover {
-      border-color: var(--amber);
-      color: var(--amber);
+    #result {
+      text-align: center;
+      font-weight: bold;
+      min-height: 20px;
     }
-
-    .caption {
-      color: #8b7f68;
+    #error {
+      color: red;
       font-size: 12px;
       text-align: center;
-      max-width: 380px;
-      line-height: 1.5;
-      margin: 0;
-    }
-
-    @media (max-width: 380px) {
-      .keys { grid-template-columns: repeat(2, 1fr); }
-      .restart { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
-  <div class="desk">
-    <div class="terminal">
-      <div class="titlebar">
-        <span class="dots"><span></span><span></span><span></span></span>
-        <span class="tab">calculator.py — running</span>
-      </div>
 
-      <div class="screen">
-        <pre class="banner">========================================
--------Welcome to the Calculator!-------
-========================================</pre>
+  <div class="calculator">
+    <h1>Calculator</h1>
 
-        <div class="line">
-          <label for="input1">Enter the first number:</label>
-          <input type="number" id="input1" step="any" inputmode="decimal" />
-        </div>
+    <input type="number" id="num1" placeholder="First number">
+    <input type="number" id="num2" placeholder="Second number">
 
-        <div class="line">
-          <label for="input2">Enter the second number:</label>
-          <input type="number" id="input2" step="any" inputmode="decimal" />
-        </div>
-
-        <div class="line">
-          <span class="label">Enter the symbol (+, -, *, /):</span>
-          <div class="keys">
-            <button type="button" data-op="+">+</button>
-            <button type="button" data-op="-">-</button>
-            <button type="button" data-op="*">*</button>
-            <button type="button" data-op="/">÷</button>
-          </div>
-        </div>
-
-        <div class="out" id="out">&gt; waiting for input<span class="cursor">_</span></div>
-        <div class="err" id="err"></div>
-
-        <div class="line restart">
-          <span class="label">Type 'stop' to exit, or press Enter to continue:</span>
-          <button type="button" id="reset">clear</button>
-        </div>
-      </div>
+    <div class="buttons">
+      <button onclick="calculate('+')">+</button>
+      <button onclick="calculate('-')">-</button>
+      <button onclick="calculate('*')">*</button>
+      <button onclick="calculate('/')">/</button>
     </div>
 
-    <p class="caption">
-      A calculator I put together while learning Python — the math logic is
-      mine, and I leaned on AI to help turn it into something you can use in
-      a browser.
-    </p>
+    <p id="result"></p>
+    <p id="error"></p>
   </div>
 
   <script>
-    var input1 = document.getElementById("input1");
-    var input2 = document.getElementById("input2");
-    var out = document.getElementById("out");
-    var err = document.getElementById("err");
-    var resetBtn = document.getElementById("reset");
+    function calculate(op) {
+      var n1 = document.getElementById("num1").value;
+      var n2 = document.getElementById("num2").value;
+      var errorBox = document.getElementById("error");
+      var resultBox = document.getElementById("result");
 
-    var opButtons = document.querySelectorAll(".keys button");
-    for (var i = 0; i < opButtons.length; i++) {
-      opButtons[i].addEventListener("click", function (event) {
-        calculate(event.target.getAttribute("data-op"));
-      });
-    }
+      errorBox.textContent = "";
+      resultBox.textContent = "";
 
-    resetBtn.addEventListener("click", function () {
-      input1.value = "";
-      input2.value = "";
-      out.innerHTML = "&gt; waiting for input<span class=\"cursor\">_</span>";
-      err.textContent = "";
-    });
-
-    function calculate(symbol) {
-      err.textContent = "";
-
-      if (input1.value === "" || input2.value === "") {
-        err.textContent = "Enter both numbers first.";
+      if (n1 === "" || n2 === "") {
+        errorBox.textContent = "Please enter both numbers.";
         return;
       }
 
-      var number1 = parseFloat(input1.value);
-      var number2 = parseFloat(input2.value);
-      var result;
+      n1 = parseFloat(n1);
+      n2 = parseFloat(n2);
+      var answer;
 
-      if (symbol === "+") {
-        result = number1 + number2;
-      } else if (symbol === "-") {
-        result = number1 - number2;
-      } else if (symbol === "*") {
-        result = number1 * number2;
-      } else if (symbol === "/") {
-        if (number2 === 0) {
-          err.textContent = "Can't divide by zero.";
+      if (op === "+") {
+        answer = n1 + n2;
+      } else if (op === "-") {
+        answer = n1 - n2;
+      } else if (op === "*") {
+        answer = n1 * n2;
+      } else if (op === "/") {
+        if (n2 === 0) {
+          errorBox.textContent = "Can't divide by zero.";
           return;
         }
-        result = number1 / number2;
+        answer = n1 / n2;
       }
 
-      out.innerHTML = "&gt; ANSWER IS: " + result + "<span class=\"cursor\">_</span>";
+      resultBox.textContent = "ANSWER IS: " + answer;
     }
   </script>
+
 </body>
 </html>
